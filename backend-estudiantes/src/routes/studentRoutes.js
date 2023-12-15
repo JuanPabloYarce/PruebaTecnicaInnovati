@@ -3,7 +3,6 @@
 const express = require('express');
 const router = express.Router();
 const Student = require('../models/studentModel');
-const mongoose = require('mongoose');
 
 // GET all students
 router.get('/', async (req, res) => {
@@ -28,12 +27,11 @@ router.post('/', async (req, res) => {
     };
   
     try {
-      const student = new Student(studentData); // Crear una nueva instancia del modelo de estudiante
-  
-      const newStudent = await student.save(); // Guardar el estudiante en la base de datos
-      res.status(201).json(newStudent); // Responder con el nuevo estudiante creado
+      const student = new Student(studentData); 
+      const newStudent = await student.save(); 
+      res.status(201).json(newStudent); 
     } catch (err) {
-      res.status(400).json({ message: err.message }); // Manejar errores de inserción
+      res.status(400).json({ message: err.message });
     }
   });
 
@@ -75,8 +73,8 @@ router.post('/', async (req, res) => {
 
 // Ruta para actualizar parcialmente un estudiante por su ID
 router.patch('/:id', async (req, res) => {
-  const { id } = req.params; // Obtener el ID del estudiante de los parámetros de la solicitud
-  const updateData = req.body; // Obtener los datos de actualización del cuerpo de la solicitud
+  const { id } = req.params;
+  const updateData = req.body;
 
   try {
     const updatedStudent = await Student.findOneAndUpdate(

@@ -25,7 +25,6 @@ mongoose.connect(uri);
   db.on('error', console.error.bind(console, 'MongoDB connection error:'));
   db.once('open', () => {
     console.log('Connected to MongoDB Atlas');
-    // Aquí puedes comenzar a definir tus esquemas y modelos de MongoDB
   });
 
 // Routes
