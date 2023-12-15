@@ -52,6 +52,63 @@ router.post('/', async (req, res) => {
     }
   });
 
-// Other routes for updating, deleting, etc.
+  //Update an existing student
+  router.put('/:id', async (req, res) => {
+    const { id, firstName, lastName, email, courses } = req.body;
+  
+    try {
+      const updatedStudent = await Student.findOneAndUpdate(
+        { id: parseInt(req.params.id) },
+        { id, firstName, lastName, email, courses },
+        { new: true }
+      );
+  
+      if (updatedStudent) {
+        res.json(updatedStudent);
+      } else {
+        res.status(404).json({ message: 'Estudiante no encontrado para actualizar' });
+      }
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  });
+
+// Ruta para actualizar parcialmente un estudiante por su ID
+router.patch('/:id', async (req, res) => {
+  const { id } = req.params; // Obtener el ID del estudiante de los parámetros de la solicitud
+  const updateData = req.body; // Obtener los datos de actualización del cuerpo de la solicitud
+
+  try {
+    const updatedStudent = await Student.findOneAndUpdate(
+      { id: parseInt(id) },
+      { $set: updateData }, // Utilizar $set para actualizar solo los campos proporcionados en updateData
+      { new: true }
+    );
+
+    if (updatedStudent) {
+      res.json(updatedStudent);
+    } else {
+      res.status(404).json({ message: 'Estudiante no encontrado para actualizar' });
+    }
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+
+//Delete one student
+  router.delete('/:id', async (req, res) => {
+    try {
+      const deletedStudent = await Student.findOneAndDelete({ id: parseInt(req.params.id) });
+  
+      if (deletedStudent) {
+        res.json({ message: 'Estudiante eliminado exitosamente' });
+      } else {
+        res.status(404).json({ message: 'Estudiante no encontrado para eliminar' });
+      }
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  });
 
 module.exports = router;
